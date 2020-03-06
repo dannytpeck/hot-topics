@@ -1,9 +1,9 @@
 {
-  "name": "aduro-index",
+  "name": "hot-topics",
   "version": "1.0.0",
-  "description": "Aduro Index",
+  "description": "Hot Topics",
   "main": "index.js",
-  "repository": "https://github.com/dannytpeck/aduro-index",
+  "repository": "https://github.com/dannytpeck/hot-topics",
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.config.js --mode development",
     "build": "webpack -p --config ./webpack.config.js --progress --colors"
