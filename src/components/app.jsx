@@ -173,7 +173,7 @@ function App() {
     <div id="app">
       <Header />
 
-      <div className="form-group" style={{ display: 'none' }}>
+      <div className="form-group">
         <label htmlFor="employerName">EmployerName</label>
         <select id="employerName" className="form-control custom-select" onChange={selectClient}>
           <option defaultValue>Select Employer</option>
@@ -182,7 +182,7 @@ function App() {
       </div>
 
       <div className="text-center">
-        <button type="button" className="btn btn-primary" id="uploadButton" onClick={massUpload}>Upload Flourishing Index Tile</button>
+        <button type="button" className="btn btn-primary" id="uploadButton" onClick={() => uploadChallenge(selectedClient)}>Upload Hot Topic</button>
         <img id="spinner" src="images/spinner.svg" />
       </div>
 
