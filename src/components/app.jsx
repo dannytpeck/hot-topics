@@ -41,12 +41,10 @@ function App() {
     // Open the modal
     $('#uploadModal').modal();
 
-    const flourishingClients = clients.filter(client => client.fields['Flourishing Index'] === 'Web');
+    $('#counter').html(`<p><span id="finishedUploads">0</span> / ${clients.length}</p>`);
 
-    $('#counter').html(`<p><span id="finishedUploads">0</span> / ${flourishingClients.length}</p>`);
-
-    flourishingClients.map(client => {
-      // console.log(client);
+    // Upload to all clients
+    clients.map(client => {
       uploadChallenge(client);
     });
   }
@@ -66,8 +64,8 @@ function App() {
       },
       'ActivityType': 'complete the Hot Topics podcast',
       'AmountUnit': '',
-      'ChallengeLogoThumbURL': '#',
-      'ChallengeLogoURL': '#',
+      'ChallengeLogoThumbURL': 'https://images.limeade.com/PDW/46d4129e-5222-43b2-ac78-696f69b42410-large.jpg',
+      'ChallengeLogoURL': 'https://images.limeade.com/PDW/46d4129e-5222-43b2-ac78-696f69b42410-large.jpg',
       'ChallengeTarget': 1,
       'ChallengeType': 'OneTimeEvent',
       'Dimensions': [],
@@ -185,6 +183,13 @@ function App() {
         <button type="button" className="btn btn-primary" id="uploadButton" onClick={() => uploadChallenge(selectedClient)}>Upload Hot Topic</button>
         <img id="spinner" src="images/spinner.svg" />
       </div>
+
+      {/*
+      <div className="text-center">
+        <button type="button" className="btn btn-primary" id="uploadButton" onClick={() => massUpload()}>Mass Upload Hot Topic</button>
+        <img id="spinner" src="images/spinner.svg" />
+      </div>
+      */}
 
       <Footer />
 
