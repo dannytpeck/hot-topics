@@ -55,8 +55,8 @@ function App() {
     // Open the modal
     $('#uploadModal').modal();
 
-    const startDate = '2020-02-17';
-    const endDate = '2020-03-17';
+    const startDate = '2020-03-09';
+    const endDate = '2020-03-31';
 
     const data = {
       'AboutChallenge': '',
@@ -64,14 +64,14 @@ function App() {
         'Type': 'IncentivePoints',
         'Value': '0'
       },
-      'ActivityType': 'complete the assessment',
+      'ActivityType': 'complete the Hot Topics podcast',
       'AmountUnit': '',
-      'ChallengeLogoThumbURL': 'https://d2qv7eqemtyl41.cloudfront.net/PDW/c7a3a87d-d7d2-4273-8c53-943f656c4d0d-large.jpg',
-      'ChallengeLogoURL': 'https://d2qv7eqemtyl41.cloudfront.net/PDW/c7a3a87d-d7d2-4273-8c53-943f656c4d0d-large.jpg',
+      'ChallengeLogoThumbURL': '#',
+      'ChallengeLogoURL': '#',
       'ChallengeTarget': 1,
       'ChallengeType': 'OneTimeEvent',
       'Dimensions': [],
-      'DisplayInProgram': startDate === moment(Date) ? true : false,  // sets true if the challenge starts today
+      'DisplayInProgram': startDate === moment().format('YYYY-MM-DD') ? true : false,  // sets true if the challenge starts today
       'DisplayPriority': null,
       'EndDate': endDate,
       'EventCode': '',
@@ -80,7 +80,7 @@ function App() {
       'IsFeatured': null,
       'IsSelfReportEnabled': true,
       'IsTeamChallenge': false,
-      'Name': 'Find Your Flourishing Score',
+      'Name': 'Special Edition Hot Topic - COVID-19: Managing Your Mindset',
       'ShortDescription': 'No matter where you are today, you can always discover opportunities to grow and unlock your potential.',
       'ShowExtendedDescription': false,
       'ShowWeeklyCalendar': false,
@@ -98,14 +98,14 @@ function App() {
       },
       contentType: 'application/json; charset=utf-8'
     }).done((result) => {
-      const surveyUrl = `/api/Redirect?url=https%3A%2F%2Fheartbeat.adurolife.com%2Fapp%2Fsurvey%2F%3Fs%3D4f9e5f0d-d4bd-4306-bf42-40ccabca66e1%26q1%3D${result.Data.ChallengeId}%26q4%3D%5Bparticipantcode%5D%26q5%3D%5Be%5D`;
+      const surveyUrl = `/api/Redirect?url=https%3A%2F%2Fheartbeat.adurolife.com%2Fapp%2Fsurvey%2F%3Fs%3Dcc15e309-c5f9-42bf-9efa-fd9f43e7fcfa%26q1%3D${result.Data.ChallengeId}%26q4%3D%5Bparticipantcode%5D%26q5%3D%5Be%5D`;
 
       $.ajax({
         url: 'https://api.limeade.com/api/admin/activity/' + result.Data.ChallengeId,
         type: 'PUT',
         dataType: 'json',
         data: JSON.stringify({
-          'AboutChallenge': `<p>This five-minute assessment will give you the chance to reflect on different areas of your life and how they all tie together. Please respond to the questions on a scale from 0 to 10.</p><p>The Flourishing Index was developed by <a style="text-decoration: underline;" href="https://hfh.fas.harvard.edu/" target="_blank" rel="noopener">The Human Flourishing Program</a> at Harvard University. The background and motivation for these items and the flourishing domains can be found in: VanderWeele, T.J. (2017). <a style="text-decoration: underline;" href="https://www.pnas.org/content/114/31/8148" target="_blank" rel="noopener">On the promotion of human flourishing</a>. Proceedings of the National Academy of Sciences, U.S.A., 31:8148-8156.</p><p>You can access your results any time after you have completed the full assessment by clicking <a href="${surveyUrl}" target="_blank" rel="noopener">here</a>. After reporting your completion, you can find this tile in your History tab.</p><p>The Flourishing Index will be available for you to complete four times each year to provide real-time reflection on your life.</p><p><a href="${surveyUrl}" target="_blank" rel="noopener">CLICK HERE TO GET STARTED</a>.</p><p style="font-size: 0.7em;">&copy; Copyright 2020 <a style="text-decoration: none;" href="http://www.adurolife.com/" target="_blank" rel="noopener">ADURO, INC.</a> All rights reserved.</p>`
+          'AboutChallenge': `<p>The uncertainty and quickly changing situation with COVID-19 can lead to fear and anxiety. But &ndash; is that helping or hurting us? For many of us, it&rsquo;s also adding to a lingering background stress that can accumulate, and have a real impact on our ability to function. So, why does this happen, and what can we do to ease it in our day to day lives? Licensed Integrative Psychotherapist Joe Eiben answers our questions on this edition of Hot Topics.</p><p><a href="https://vimeo.com/adurolife/review/395790817/0b14605edf" target="_blank" rel="noopener">Listen to the episode here</a>.</p><p><a href="${surveyUrl}" target="_blank" rel="noopener">After the podcast, be sure to fill out the survey</a>. We'd love to hear from you!</p><p style="font-size: 0.7em;">&copy; Copyright 2020 <a style="text-decoration: none;" href="http://www.adurolife.com/" target="_blank" rel="noopener">ADURO, INC.</a> All rights reserved.</p>`
         }),
         headers: {
           Authorization: 'Bearer ' + client.fields['LimeadeAccessToken']
