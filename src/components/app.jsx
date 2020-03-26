@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import _ from 'lodash';
 import Airtable from 'airtable';
 const base = new Airtable({ apiKey: 'keyCxnlep0bgotSrX' }).base('appHXXoVD1tn9QATh');
 
@@ -41,15 +42,22 @@ function App() {
     // Open the modal
     $('#uploadModal').modal();
 
-    $('#counter').html(`<p><span id="finishedUploads">0</span> / ${clients.length}</p>`);
+    let timer = 0;
 
+    // Upload to coaching clients
     const filteredClients = clients.filter(client => {
-      return client.fields['Coaching'] === 'Yes';
+      return client.fields['Failed Upload'] === '1';
     });
 
-    // Upload to all clients
+    // Set counter based on filteredClients
+    $('#counter').html(`<p><span id="finishedUploads">0</span> / ${filteredClients.length}</p>`);
+
     filteredClients.map(client => {
-      uploadChallenge(client);
+      // 2 seconds between ajax requests, because limeade is bad and returns 500 errors if we go too fast
+      timer += 2000;
+      setTimeout(() => {
+        uploadChallenge(client);
+      }, timer);
     });
   }
 
@@ -113,7 +121,7 @@ function App() {
         type: 'PUT',
         dataType: 'json',
         data: JSON.stringify({
-          'AboutChallenge': `<p>For many of us, the idea of working remotely was a new concept until recent events. If you are transitioning from working in an office to working at home, you're not alone. In this episode of Hot Topics, Coach Elyse explores some ways you can create some normalcy and structure while working from home.</p><p>Listen to the episode <a href="https://vimeo.com/398696290" target="_blank" rel="noopener">here.</a></p><p>After the podcast, be sure to fill out <a href="${surveyUrl}" target="_blank" rel="noopener">the survey</a>. We'd love to hear from you!</p><p style="font-size: 0.7em;">&copy; Copyright 2020 <a style="text-decoration: none;" href="http://www.adurolife.com/" target="_blank" rel="noopener">ADURO, INC.</a> All rights reserved.</p>`
+          'AboutChallenge': `<p>For many of us, the idea of working remotely was a new concept until recent events. If you are transitioning from working in an office to working at home, you're not alone. In this episode of Hot Topics, Coach Elyse explores some ways you can create some normalcy and structure while working from home.</p><p>Listen to the episode <a href="https://vimeo.com/adurolife/review/398697728/8791350656" target="_blank" rel="noopener">here.</a></p><p>After the podcast, be sure to fill out <a href="${surveyUrl}" target="_blank" rel="noopener">the survey</a>. We'd love to hear from you!</p><p style="font-size: 0.7em;">&copy; Copyright 2020 <a style="text-decoration: none;" href="http://www.adurolife.com/" target="_blank" rel="noopener">ADURO, INC.</a> All rights reserved.</p>`
         }),
         headers: {
           Authorization: 'Bearer ' + client.fields['LimeadeAccessToken']
@@ -127,7 +135,7 @@ function App() {
 
         $('#uploadModal .modal-body').append(`
           <div class="alert alert-success" role="alert">
-            <p>Uploaded Tile for <strong>${client.fields['Account Name']}</strong></p>
+            <p>Uploaded Tile for <a href="${client.fields['Domain']}/ControlPanel/RoleAdmin/ViewChallenges.aspx?type=employer" target="_blank"><strong>${client.fields['Account Name']}</strong></a></p>
             <p class="mb-0"><strong>Challenge Id</strong></p>
           <p><a href="${client.fields['Domain']}/admin/program-designer/activities/activity/${result.Data.ChallengeId}" target="_blank">${result.Data.ChallengeId}</a></p>
           </div>
@@ -187,17 +195,17 @@ function App() {
         </select>
       </div>
 
-      <div className="text-center">
-        <button type="button" className="btn btn-primary" id="uploadButton" onClick={() => uploadChallenge(selectedClient)}>Upload Hot Topic</button>
-        <img id="spinner" src="images/spinner.svg" />
-      </div>
+      <div className="row">
+        <div className="col text-left">
+          <button type="button" className="btn btn-primary" id="uploadButton" onClick={() => uploadChallenge(selectedClient)}>Single Upload Hot Topic</button>
+          <img id="spinner" src="images/spinner.svg" />
+        </div>
 
-      {/*
-      <div className="text-center">
-        <button type="button" className="btn btn-primary" id="uploadButton" onClick={() => massUpload()}>Mass Upload Hot Topic</button>
-        <img id="spinner" src="images/spinner.svg" />
+        <div className="col text-right">
+          <button type="button" className="btn btn-danger" id="uploadButton" onClick={() => massUpload()}>Mass Upload Hot Topic</button>
+          <img id="spinner" src="images/spinner.svg" />
+        </div>
       </div>
-      */}
 
       <Footer />
 
