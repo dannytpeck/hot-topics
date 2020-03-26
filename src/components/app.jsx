@@ -43,8 +43,12 @@ function App() {
 
     $('#counter').html(`<p><span id="finishedUploads">0</span> / ${clients.length}</p>`);
 
+    const filteredClients = clients.filter(client => {
+      return client.fields['Coaching'] === 'Yes';
+    });
+
     // Upload to all clients
-    clients.map(client => {
+    filteredClients.map(client => {
       uploadChallenge(client);
     });
   }
@@ -53,8 +57,14 @@ function App() {
     // Open the modal
     $('#uploadModal').modal();
 
-    const startDate = '2020-03-09';
-    const endDate = '2020-03-31';
+    const startDate = '2020-04-01';
+    const endDate = '2020-04-30';
+    const imageUrl = 'https://images.limeade.com/PDW/4db33758-07f3-434c-9045-da0b5d34c8b7-large.jpg';
+    const title = 'Hot Topic: Working From Home Wisely';
+    const activityText = 'listen to the recording';
+    const shortDescription = 'Complete the Hot Topics Podcast.';
+
+    const surveyId = 'f4da09d7-59ac-4536-a13b-a59c5d38245a';
 
     const data = {
       'AboutChallenge': '',
@@ -62,10 +72,10 @@ function App() {
         'Type': 'IncentivePoints',
         'Value': '0'
       },
-      'ActivityType': 'complete the Hot Topics podcast',
+      'ActivityType': activityText,
       'AmountUnit': '',
-      'ChallengeLogoThumbURL': 'https://images.limeade.com/PDW/46d4129e-5222-43b2-ac78-696f69b42410-large.jpg',
-      'ChallengeLogoURL': 'https://images.limeade.com/PDW/46d4129e-5222-43b2-ac78-696f69b42410-large.jpg',
+      'ChallengeLogoThumbURL': imageUrl,
+      'ChallengeLogoURL': imageUrl,
       'ChallengeTarget': 1,
       'ChallengeType': 'OneTimeEvent',
       'Dimensions': [],
@@ -78,8 +88,8 @@ function App() {
       'IsFeatured': null,
       'IsSelfReportEnabled': true,
       'IsTeamChallenge': false,
-      'Name': 'Special Edition Hot Topic - COVID-19: Managing Your Mindset',
-      'ShortDescription': 'No matter where you are today, you can always discover opportunities to grow and unlock your potential.',
+      'Name': title,
+      'ShortDescription': shortDescription,
       'ShowExtendedDescription': false,
       'ShowWeeklyCalendar': false,
       'StartDate': startDate,
@@ -96,14 +106,14 @@ function App() {
       },
       contentType: 'application/json; charset=utf-8'
     }).done((result) => {
-      const surveyUrl = `/api/Redirect?url=https%3A%2F%2Fheartbeat.adurolife.com%2Fapp%2Fsurvey%2F%3Fs%3Dcc15e309-c5f9-42bf-9efa-fd9f43e7fcfa%26q1%3D${result.Data.ChallengeId}%26q4%3D%5Bparticipantcode%5D%26q5%3D%5Be%5D`;
+      const surveyUrl = `/api/Redirect?url=https%3A%2F%2Fheartbeat.adurolife.com%2Fapp%2Fsurvey%2F%3Fs%3D${surveyId}%26q1%3D${result.Data.ChallengeId}%26q4%3D%5Bparticipantcode%5D%26q5%3D%5Be%5D`;
 
       $.ajax({
         url: 'https://api.limeade.com/api/admin/activity/' + result.Data.ChallengeId,
         type: 'PUT',
         dataType: 'json',
         data: JSON.stringify({
-          'AboutChallenge': `<p>The uncertainty and quickly changing situation with COVID-19 can lead to fear and anxiety. But &ndash; is that helping or hurting us? For many of us, it&rsquo;s also adding to a lingering background stress that can accumulate, and have a real impact on our ability to function. So, why does this happen, and what can we do to ease it in our day to day lives? Licensed Integrative Psychotherapist Joe Eiben answers our questions on this edition of Hot Topics.</p><p><a href="https://vimeo.com/adurolife/review/395790817/0b14605edf" target="_blank" rel="noopener">Listen to the episode here</a>.</p><p><a href="${surveyUrl}" target="_blank" rel="noopener">After the podcast, be sure to fill out the survey</a>. We'd love to hear from you!</p><p style="font-size: 0.7em;">&copy; Copyright 2020 <a style="text-decoration: none;" href="http://www.adurolife.com/" target="_blank" rel="noopener">ADURO, INC.</a> All rights reserved.</p>`
+          'AboutChallenge': `<p>For many of us, the idea of working remotely was a new concept until recent events. If you are transitioning from working in an office to working at home, you're not alone. In this episode of Hot Topics, Coach Elyse explores some ways you can create some normalcy and structure while working from home.</p><p>Listen to the episode <a href="https://vimeo.com/398696290" target="_blank" rel="noopener">here.</a></p><p>After the podcast, be sure to fill out <a href="${surveyUrl}" target="_blank" rel="noopener">the survey</a>. We'd love to hear from you!</p><p style="font-size: 0.7em;">&copy; Copyright 2020 <a style="text-decoration: none;" href="http://www.adurolife.com/" target="_blank" rel="noopener">ADURO, INC.</a> All rights reserved.</p>`
         }),
         headers: {
           Authorization: 'Bearer ' + client.fields['LimeadeAccessToken']
@@ -119,9 +129,7 @@ function App() {
           <div class="alert alert-success" role="alert">
             <p>Uploaded Tile for <strong>${client.fields['Account Name']}</strong></p>
             <p class="mb-0"><strong>Challenge Id</strong></p>
-            <p>${result.Data.ChallengeId}</p>
-            <p class="mb-0"><strong>Survey link</strong></p>
-            <p>${surveyUrl}</p>
+          <p><a href="${client.fields['Domain']}/admin/program-designer/activities/activity/${result.Data.ChallengeId}" target="_blank">${result.Data.ChallengeId}</a></p>
           </div>
         `);
 
