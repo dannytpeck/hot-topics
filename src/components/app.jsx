@@ -88,7 +88,7 @@ function App() {
       'ChallengeType': 'OneTimeEvent',
       'Dimensions': [],
       'DisplayInProgram': startDate === moment().format('YYYY-MM-DD') ? true : false,  // sets true if the challenge starts today
-      'DisplayPriority': null,
+      'DisplayPriority': 100,
       'EndDate': endDate,
       'EventCode': '',
       'Frequency': 'None',
