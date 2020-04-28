@@ -44,17 +44,17 @@ function App() {
 
     let timer = 0;
 
-    // Upload to coaching clients
+    // Upload to Hot Topics clients
     const filteredClients = clients.filter(client => {
-      return client.fields['Failed Upload'] === '1';
+      return client.fields['Hot Topics'] === 'Yes';
     });
 
     // Set counter based on filteredClients
     $('#counter').html(`<p><span id="finishedUploads">0</span> / ${filteredClients.length}</p>`);
 
     filteredClients.map(client => {
-      // 2 seconds between ajax requests, because limeade is bad and returns 500 errors if we go too fast
-      timer += 2000;
+      // 5 seconds between ajax requests, because limeade is bad and returns 500 errors if we go too fast
+      timer += 5000;
       setTimeout(() => {
         uploadChallenge(client);
       }, timer);
@@ -65,14 +65,14 @@ function App() {
     // Open the modal
     $('#uploadModal').modal();
 
-    const startDate = '2020-04-01';
-    const endDate = '2020-04-30';
+    const startDate = '2020-05-04';
+    const endDate = '2020-05-31';
     const imageUrl = 'https://images.limeade.com/PDW/4db33758-07f3-434c-9045-da0b5d34c8b7-large.jpg';
-    const title = 'Hot Topic: Working From Home Wisely';
-    const activityText = 'listen to the recording';
-    const shortDescription = 'Complete the Hot Topics Podcast.';
+    const title = 'Hot Topic: Balancing Act';
+    const activityText = 'listen to the latest Hot Topic podcast';
+    const shortDescription = 'Being a parent is hard work. Recently, many parents have been finding themselves in unfamiliar territory. Not only are they shifting to work from home but are also trying to support their kids\' education at home.';
 
-    const surveyId = 'f4da09d7-59ac-4536-a13b-a59c5d38245a';
+    const surveyId = '78c9c8f4-f0b1-4dc8-931b-fe1495b38af8';
 
     const data = {
       'AboutChallenge': '',
@@ -121,7 +121,7 @@ function App() {
         type: 'PUT',
         dataType: 'json',
         data: JSON.stringify({
-          'AboutChallenge': `<p>For many of us, the idea of working remotely was a new concept until recent events. If you are transitioning from working in an office to working at home, you're not alone. In this episode of Hot Topics, Coach Elyse explores some ways you can create some normalcy and structure while working from home.</p><p>Listen to the episode <a href="https://vimeo.com/adurolife/review/398697728/8791350656" target="_blank" rel="noopener">here.</a></p><p>After the podcast, be sure to fill out <a href="${surveyUrl}" target="_blank" rel="noopener">the survey</a>. We'd love to hear from you!</p><p style="font-size: 0.7em;">&copy; Copyright 2020 <a style="text-decoration: none;" href="http://www.adurolife.com/" target="_blank" rel="noopener">ADURO, INC.</a> All rights reserved.</p>`
+          'AboutChallenge': `<p>In this month's Hot Topic podcast, our host Coach Molly Pracht and mom and entrepreneur Kim Murgatroyd share some unique insight into home education, including how to build a routine that is fun and can help keep stress low for your whole family.</p><hr size="1" /><h2 style="text-align: center;">Listen to the episode <a href="https://vimeo.com/adurolife/review/408170538/2a86f6c89b" target="_blank" rel="noopener"><span style="text-decoration: underline;">HERE</span></a>.</h2><hr size="1" /><p style="text-align: center;">After the podcast, be sure to fill out <a href="${surveyUrl}" target="_blank" rel="noopener"><span style="text-decoration: underline;"><strong>the survey</strong></span></a>.<br />We'd love to hear from you!</p>`
         }),
         headers: {
           Authorization: 'Bearer ' + client.fields['LimeadeAccessToken']
