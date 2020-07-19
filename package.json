@@ -22,7 +22,7 @@
   "dependencies": {
     "airtable": "^0.8.1",
     "limiter": "^1.1.4",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "moment": "^2.24.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
